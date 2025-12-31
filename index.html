@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Circuit Assessment: Clinician Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .slide-down { animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-500 p-1.5 rounded">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h1 class="font-semibold text-lg tracking-tight">Precision Psychiatry <span class="text-slate-400 font-normal">| Clinician Tool</span></h1>
+            </div>
+            <div class="text-xs text-slate-400">
+                v2.1 • Williams Taxonomy
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Assessment Form -->
+        <div class="lg:col-span-7 space-y-6">
+            
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-5">
+                <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Patient Interview Assessment</h2>
+                
+                <form id="assessment-form" oninput="updateRealtime()">
+                    
+                    <!-- 1. Default Mode Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">I</span>
+                            <h3 class="font-bold text-slate-800">Default Mode Circuit <span class="text-xs font-normal text-slate-500">(The "Rumination" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Repetitive Negative Thinking</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">"Broken record" loop, regret/worry.</span>
+                                    <select name="dmn_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Initial Insomnia</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Cannot sleep due to racing mind.</span>
+                                    <select name="dmn_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed "Internal" Distractibility</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Patient stares blankly, analyzing internally, misses conversation cues.</span>
+                                    <select name="dmn_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - No observable distraction</option>
+                                        <option value="1">1 - Mild distraction</option>
+                                        <option value="2">2 - Frequent internal focus</option>
+                                        <option value="3">3 - Pervasive internal focus</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Salience Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold">II</span>
+                            <h3 class="font-bold text-slate-800">Salience Circuit <span class="text-xs font-normal text-slate-500">(The "Anxious Avoidance" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Somatic/Visceral Anxiety</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Palpitations, GI knots, dizziness, physical complaints.</span>
+                                    <select name="sal_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Sensory Overwhelm</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Exaggerated startle, bothered by lights/noise.</span>
+                                    <select name="sal_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed Avoidance Behavior</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Avoids tasks/places specifically due to physical intolerance of anxiety.</span>
+                                    <select name="sal_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - No avoidance</option>
+                                        <option value="1">1 - Some hesitancy</option>
+                                        <option value="2">2 - Clear avoidance</option>
+                                        <option value="3">3 - Disabling avoidance</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Negative Affect Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-orange-100 text-orange-700 flex items-center justify-center text-xs font-bold">III</span>
+                            <h3 class="font-bold text-slate-800">Negative Affect Circuit <span class="text-xs font-normal text-slate-500">(The "Threat" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Dysphoria & Misery</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Intense sadness, guilt, "dark-tinted" view.</span>
+                                    <select name="neg_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Catastrophizing & Bias</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Expects worst outcome, interprets neutral as negative.</span>
+                                    <select name="neg_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Rejection Sensitivity / Trauma Hx</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Hypersensitive to criticism. History of early life trauma (ELT).</span>
+                                    <select name="neg_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Low sensitivity / No ELT</option>
+                                        <option value="1">1 - Mild sensitivity</option>
+                                        <option value="2">2 - High sensitivity</option>
+                                        <option value="3">3 - Extreme sensitivity / Confirmed ELT</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Positive Affect Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">IV</span>
+                            <h3 class="font-bold text-slate-800">Positive Affect Circuit <span class="text-xs font-normal text-slate-500">(The "Reward" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Anhedonia ("The Blahs")</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Feeling flat, numb, empty (distinct from sadness).</span>
+                                    <select name="pos_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Lack of Motivation</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Lack of initiative, psychomotor retardation.</span>
+                                    <select name="pos_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Reward Anticipation Deficit</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">"Would you be excited if you won the lottery?" (Observed apathy).</span>
+                                    <select name="pos_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Normal anticipation</option>
+                                        <option value="1">1 - Reduced excitement</option>
+                                        <option value="2">2 - Minimal excitement</option>
+                                        <option value="3">3 - Complete lack of reward response</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Attention Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-yellow-100 text-yellow-700 flex items-center justify-center text-xs font-bold">V</span>
+                            <h3 class="font-bold text-slate-800">Attention Circuit <span class="text-xs font-normal text-slate-500">(The "Inattention" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Sustained Focus Deficit</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Cannot read a book, drifts in meetings.</span>
+                                    <select name="att_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Lethargy / Slowing</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Appears tired, slow processing speed.</span>
+                                    <select name="att_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed "Zoning Out"</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Errors of omission, mind drifting during interview.</span>
+                                    <select name="att_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Alert and focused</option>
+                                        <option value="1">1 - Occasional drift</option>
+                                        <option value="2">2 - Frequent drift</option>
+                                        <option value="3">3 - Cannot sustain conversation</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Cognitive Control Circuit -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold">VI</span>
+                            <h3 class="font-bold text-slate-800">Cognitive Control Circuit <span class="text-xs font-normal text-slate-500">(The "Cognitive Dyscontrol" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Executive Dysfunction / "Fog"</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Decision paralysis, difficulty planning.</span>
+                                    <select name="cog_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Emotional Dysregulation</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Inability to inhibit reactions (e.g., sudden crying/anger).</span>
+                                    <select name="cog_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed Impulsivity / Rigidity</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Difficulty switching topics, or impulsive speech (Errors of Commission).</span>
+                                    <select name="cog_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - No dysfunction</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe rigidity/impulsivity</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Column: Real-time Analysis -->
+        <div class="lg:col-span-5 space-y-6">
+            <div class="sticky top-20">
+                
+                <!-- Chart Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-5 mb-6">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Live Circuit Profile</h3>
+                    <div class="h-48">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Interpretation Card -->
+                <div id="interpretation-panel" class="bg-white rounded-lg shadow-sm border border-slate-200 p-0 overflow-hidden">
+                    <div class="bg-slate-800 text-white p-4">
+                        <h3 class="font-bold text-lg">Clinical Interpretation</h3>
+                        <p class="text-xs text-slate-400">Based on dominance scoring</p>
+                    </div>
+                    
+                    <div class="p-5 space-y-4">
+                        <div id="primary-biotype-box" class="hidden">
+                            <span class="text-xs font-bold text-slate-500 block mb-1">IDENTIFIED BIOTYPE</span>
+                            <h2 id="biotype-title" class="text-2xl font-bold text-indigo-700 leading-none mb-2">--</h2>
+                            <p id="biotype-desc" class="text-sm text-slate-600 mb-4 leading-relaxed">Insufficient data to determine biotype.</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 mt-4">
+                                <div class="bg-green-50 p-3 rounded border border-green-100">
+                                    <span class="text-[10px] font-bold text-green-800 uppercase block mb-1">Preferred Rx</span>
+                                    <p id="biotype-rx" class="text-sm font-semibold text-green-900">--</p>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded border border-blue-100">
+                                    <span class="text-[10px] font-bold text-blue-800 uppercase block mb-1">Preferred Tx</span>
+                                    <p id="biotype-tx" class="text-sm font-semibold text-blue-900">--</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-slate-100">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Caution</span>
+                                <p id="biotype-caution" class="text-xs text-slate-500 italic">--</p>
+                            </div>
+                        </div>
+
+                        <div id="empty-state" class="text-center py-8 text-slate-400">
+                            <i class="fa-solid fa-chart-simple text-3xl mb-2 opacity-50"></i>
+                            <p class="text-sm">Complete the assessment to generate clinical insights.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 flex gap-3">
+                    <button onclick="emailReport()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded shadow transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Send Clinical Note
+                    </button>
+                    <button onclick="resetForm()" class="px-4 py-3 bg-white border border-slate-300 text-slate-600 rounded hover:bg-slate-50 font-medium">
+                        Reset
+                    </button>
+                </div>
+                
+                <p class="text-[10px] text-center text-slate-400 mt-4">
+                    Report will be sent to default: architmehta98@gmail.com
+                </p>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data Structure
+        const circuits = {
+            dmn: { 
+                name: "Default Mode", 
+                code: "DMN",
+                desc: "Intrinsic hyperconnectivity (PCC/mPFC). Ruminative 'loops'.", 
+                rx: "SSRI / Vortioxetine", 
+                tx: "Rumination-Focused CBT",
+                caution: "Standard supportive therapy may reinforce rumination."
+            },
+            sal: { 
+                name: "Salience", 
+                code: "SAL",
+                desc: "Autonomic hyperactivity (Insula). Visceral anxiety and overwhelm.", 
+                rx: "SSRI + Beta Blockers / Alpha-2 Agonists", 
+                tx: "Exposure Therapy (ERP)",
+                caution: "High somatic focus; avoid purely cognitive approaches initially."
+            },
+            neg: { 
+                name: "Negative Affect", 
+                code: "NEG",
+                desc: "Amygdala hyperactivation. Threat bias and misery.", 
+                rx: "SSRI (Escitalopram)", 
+                tx: "Cognitive Restructuring / Trauma Tx",
+                caution: "High rejection sensitivity; build strong alliance first."
+            },
+            pos: { 
+                name: "Positive Affect", 
+                code: "POS",
+                desc: "Striatal hypoactivation. Anhedonia and motivational deficit.", 
+                rx: "DA Agonist (Pramipexole / Bupropion)", 
+                tx: "Behavioral Activation (Savoring)",
+                caution: "SSRI monotherapy may worsen apathy (5HT2C inhibition)."
+            },
+            att: { 
+                name: "Attention", 
+                code: "ATT",
+                desc: "Fronto-parietal hypoconnectivity. Focus deficits.", 
+                rx: "SNRI / Stimulants", 
+                tx: "Cognitive Remediation",
+                caution: "May look like ADHD. CBT requires attention restoration first."
+            },
+            cog: { 
+                name: "Cognitive Control", 
+                code: "COG",
+                desc: "DLPFC dysfunction. Executive failure and dysregulation.", 
+                rx: "SNRI / Vortioxetine / TMS", 
+                tx: "Problem Solving Therapy (PST)",
+                caution: "Least likely to respond to standard SSRIs (~38% remission)."
+            }
+        };
+
+        // Chart Initialization
+        let radarChart;
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        
+        function initChart() {
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.values(circuits).map(c => c.name),
+                    datasets: [{
+                        label: 'Dysfunction Severity',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 9, // Max score per circuit (3 items * 3 pts)
+                            ticks: { display: false, stepSize: 3 },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: {
+                                font: { size: 10, weight: 'bold' },
+                                color: '#475569'
+                            }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Real-time Update Logic
+        function updateRealtime() {
+            const form = document.getElementById('assessment-form');
+            const formData = new FormData(form);
+            
+            // Calculate scores
+            const scores = {
+                dmn: parseInt(formData.get('dmn_1')) + parseInt(formData.get('dmn_2')) + parseInt(formData.get('dmn_3')),
+                sal: parseInt(formData.get('sal_1')) + parseInt(formData.get('sal_2')) + parseInt(formData.get('sal_3')),
+                neg: parseInt(formData.get('neg_1')) + parseInt(formData.get('neg_2')) + parseInt(formData.get('neg_3')),
+                pos: parseInt(formData.get('pos_1')) + parseInt(formData.get('pos_2')) + parseInt(formData.get('pos_3')),
+                att: parseInt(formData.get('att_1')) + parseInt(formData.get('att_2')) + parseInt(formData.get('att_3')),
+                cog: parseInt(formData.get('cog_1')) + parseInt(formData.get('cog_2')) + parseInt(formData.get('cog_3'))
+            };
+
+            // Update Chart
+            radarChart.data.datasets[0].data = Object.values(scores);
+            radarChart.update();
+
+            // Determine Dominant Biotype
+            let maxScore = 0;
+            let dominantKey = null;
+            
+            Object.entries(scores).forEach(([key, val]) => {
+                if (val > maxScore) {
+                    maxScore = val;
+                    dominantKey = key;
+                }
+            });
+
+            // Update UI
+            const emptyState = document.getElementById('empty-state');
+            const resultBox = document.getElementById('primary-biotype-box');
+
+            if (maxScore > 0 && dominantKey) {
+                emptyState.classList.add('hidden');
+                resultBox.classList.remove('hidden');
+                
+                const c = circuits[dominantKey];
+                document.getElementById('biotype-title').innerText = c.name + " Biotype";
+                document.getElementById('biotype-desc').innerText = c.desc;
+                document.getElementById('biotype-rx').innerText = c.rx;
+                document.getElementById('biotype-tx').innerText = c.tx;
+                document.getElementById('biotype-caution').innerText = c.caution;
+            } else {
+                emptyState.classList.remove('hidden');
+                resultBox.classList.add('hidden');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('assessment-form').reset();
+            updateRealtime();
+        }
+
+        function emailReport() {
+            const form = document.getElementById('assessment-form');
+            const formData = new FormData(form);
+            
+            // Re-calculate for report
+            const scores = {
+                DMN: parseInt(formData.get('dmn_1')) + parseInt(formData.get('dmn_2')) + parseInt(formData.get('dmn_3')),
+                SAL: parseInt(formData.get('sal_1')) + parseInt(formData.get('sal_2')) + parseInt(formData.get('sal_3')),
+                NEG: parseInt(formData.get('neg_1')) + parseInt(formData.get('neg_2')) + parseInt(formData.get('neg_3')),
+                POS: parseInt(formData.get('pos_1')) + parseInt(formData.get('pos_2')) + parseInt(formData.get('pos_3')),
+                ATT: parseInt(formData.get('att_1')) + parseInt(formData.get('att_2')) + parseInt(formData.get('att_3')),
+                COG: parseInt(formData.get('cog_1')) + parseInt(formData.get('cog_2')) + parseInt(formData.get('cog_3'))
+            };
+
+            // Find dominant
+            let maxScore = -1;
+            let dominantKey = 'DMN'; 
+            Object.entries(scores).forEach(([key, val]) => {
+                if (val > maxScore) { maxScore = val; dominantKey = key.toLowerCase(); }
+            });
+
+            const c = circuits[dominantKey];
+            const date = new Date().toLocaleDateString();
+
+            let body = `CLINICAL ASSESSMENT NOTE\n`;
+            body += `Date: ${date}\n`;
+            body += `Protocol: Williams Neural Circuit Taxonomy\n\n`;
+            
+            body += `PRIMARY FINDING: ${c.name} Biotype\n`;
+            body += `Severity Score: ${maxScore}/9\n`;
+            body += `Mechanism: ${c.desc}\n\n`;
+            
+            body += `TREATMENT IMPLICATIONS:\n`;
+            body += `Rx Consideration: ${c.rx}\n`;
+            body += `Psychotherapy: ${c.tx}\n`;
+            body += `Note: ${c.caution}\n\n`;
+            
+            body += `FULL CIRCUIT SCORES:\n`;
+            Object.entries(scores).forEach(([key, val]) => {
+                body += `- ${key}: ${val}/9\n`;
+            });
+
+            const subject = encodeURIComponent(`Clinician Note: ${c.name} Biotype Assessment`);
+            const mailtoLink = `mailto:architmehta98@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+            
+            window.location.href = mailtoLink;
+        }
+
+        // Initialize
+        initChart();
+    </script>
+</body>
+</html>
