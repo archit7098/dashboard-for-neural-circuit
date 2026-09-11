@@ -1,0 +1,494 @@
+{
+  "dmn": [
+    {
+      "name": "Anhalonium lewinii",
+      "feeling": "Loss of ego-boundary; merges with surroundings; dissociates from a felt void in identity.",
+      "why": "The pathology is a disturbance of self-referential processing itself — depersonalisation and boundary-loss are Default-Mode phenomena turned pathological, not fear or somatic arousal."
+    },
+    {
+      "name": "Antimonium crudum",
+      "feeling": "World is disappointing, so he withdraws and idealises — lives inside nostalgic, sentimental fantasy rather than facing reality.",
+      "why": "Sustained internal idealisation/fantasy that substitutes for engagement with the present is a rumination-adjacent loop — attention is captured by an internally generated narrative."
+    },
+    {
+      "name": "Cannabis indica",
+      "feeling": "Isolated in a \"glass house\"; builds elaborate fantasies and exaggerated inner perceptions rather than stepping into the outer world.",
+      "why": "Classic internally-generated, self-referential narrative that displaces external engagement — the mind is \"sticky\" on its own content."
+    },
+    {
+      "name": "China officinalis",
+      "feeling": "Feels persecuted and held back, so compensates by fantasising and theorising achievements — \"builds castles in the air.\"",
+      "why": "Chronic compensatory fantasy/theorising is a fixed internal loop standing in for real-world action, matching DMN's inward pull."
+    },
+    {
+      "name": "Coffea cruda",
+      "feeling": "Mind racing with ideas and plans, cannot stop being mentally/physically active, marked insomnia from overactive thought.",
+      "why": "Hyperactive, un-shutoffable ideation plus classic initial insomnia from mental overactivity is a near-literal match to the DM symptom profile."
+    },
+    {
+      "name": "Kalium phosphoricum",
+      "feeling": "Mind full of thought and activity when unsupported; insomnia; eventually mental exhaustion (\"impotency of his mind\").",
+      "why": "Insomnia driven by racing, anxious thought that cannot disengage — the DM \"switch\" failing to turn off at night."
+    },
+    {
+      "name": "Medorrhinum",
+      "feeling": "Absorbed in his own thoughts, loses the thread of conversation, time distorts, familiar things feel unfamiliar.",
+      "why": "Absent-mindedness and losing track of the external conversation because internal processing dominates is a direct DM marker (\"internal distractibility\")."
+    },
+    {
+      "name": "Naja tripudians",
+      "feeling": "Brooding, suicidal preoccupation with having done everything wrong; a split mind caught replaying the conflict.",
+      "why": "Brooding on irreversible past wrongs that cannot be resolved is repetitive negative thinking focused on regret — DM's core loop."
+    },
+    {
+      "name": "Natrium carbonicum",
+      "feeling": "Ennui and apprehension from being alone; blames self endlessly (\"does everything wrong\"); estranged, silently grieving.",
+      "why": "Melancholic dwelling and self-blame that cannot be put down is the DM \"broken record\" of regret."
+    },
+    {
+      "name": "Natrium muriaticum",
+      "feeling": "Dwells on past disagreeable occurrences, cannot forget; an idea \"clings\" and prevents sleep; silent grief, revengeful replaying.",
+      "why": "The single clearest Default-Mode match in the Materia Medica — Sankaran's own description (\"an idea clings, prevents sleep\") is almost a paraphrase of the biotype's initial-insomnia-from-rumination marker."
+    }
+  ],
+  "sal": [
+    {
+      "name": "Aconitum napellus",
+      "feeling": "Sudden, intense panic from outside threat — racing pulse, palpitation, restlessness, cannot sit still.",
+      "why": "The textbook acute somatic panic attack: sudden autonomic storm, startle, restlessness — Salience's hyperactive alarm in its purest acute form."
+    },
+    {
+      "name": "Argentum nitricum",
+      "feeling": "Anticipatory, phobic anxiety before performance or in closed/high places; fear of losing self-control; claustrophobia.",
+      "why": "Situational, autonomic, avoidance-driven anxiety (claustrophobia, stage fright, hurried restlessness) is the phobic face of an over-active salience alarm."
+    },
+    {
+      "name": "Arsenicum album",
+      "feeling": "Hypochondriacal anxiety about health and security; restless, fastidious, cannot settle until everything is in order.",
+      "why": "Explicitly named in the Brain Circuits text itself as the somatic/hypochondriacal presentation of Salience dysfunction."
+    },
+    {
+      "name": "Belladonna",
+      "feeling": "Sudden violent threat, must escape; throbbing carotids, palpitation, intense acute arousal that vanishes as fast as it came.",
+      "why": "Paroxysmal, purely somatic panic-and-escape reaction — alarm system firing and resetting abruptly."
+    },
+    {
+      "name": "Calcarea arsenicosa",
+      "feeling": "Insecure and mistrustful; severe palpitation triggered by the least emotional upset.",
+      "why": "Palpitation from minimal emotional trigger is a direct autonomic/somatic marker of an over-sensitised alarm circuit."
+    },
+    {
+      "name": "Calcarea carbonica",
+      "feeling": "Needs stability/protection; overwhelmed and retreating from cruelty, horror, or anything sensorily/emotionally intense.",
+      "why": "Avoidance is driven by being overwhelmed by external stimuli (violence on TV, loud events) rather than by low mood — a Salience-type overwhelm/avoidance pattern."
+    },
+    {
+      "name": "Calcarea silicata",
+      "feeling": "Anticipatory anxiety before exams/interviews; uses health-anxiety to avoid performance demands.",
+      "why": "Anticipatory somatic anxiety used defensively to avoid exposure is characteristic Salience-circuit avoidance."
+    },
+    {
+      "name": "Coca",
+      "feeling": "Feels it is too risky to leave the safety of his \"castle\"; isolates to avoid external threat while under pressure to perform.",
+      "why": "Avoidance driven by perceived external danger/risk, with somatic stage-fright, situates this in the threat-detection/avoidance axis of Salience."
+    },
+    {
+      "name": "Cocculus indicus",
+      "feeling": "Nerves become \"raw\"; marked oversensitivity to noise, motion, odours; dulled, giddy, wants to lie still with eyes closed.",
+      "why": "Sensory-flooding and hypersensitivity to ordinary stimuli is close to a textbook description of Salience's broken sensory \"filter.\""
+    },
+    {
+      "name": "Cuprum metallicum",
+      "feeling": "Feels attacked, must defend; reactions come in sudden paroxysmal spasms/convulsions rather than continuously.",
+      "why": "Paroxysmal, all-or-nothing threat-response wired for sudden defensive mobilisation matches the alarm-circuit's episodic hyperactivation."
+    },
+    {
+      "name": "Gelsemium sempervirens",
+      "feeling": "Ailments from anticipation/shock/bad news; loses control and balance; can freeze into a paralytic, immobile state.",
+      "why": "Anticipatory dread that culminates in a \"frozen\" collapse is exactly the overwhelmed/frozen reaction the Brain Circuits text uses to distinguish Salience from Negative Affect."
+    },
+    {
+      "name": "Kalium arsenicosum",
+      "feeling": "Anxious to the point of feeling \"crazy\"; extremely edgy, startles at the slightest noise.",
+      "why": "Marked startle and edge-of-the-seat autonomic arousal is a direct Salience marker."
+    },
+    {
+      "name": "Kalium carbonicum",
+      "feeling": "Fear of being alone; startles easily from noise or touch; frightened at trifles.",
+      "why": "Trigger-happy startle response to minor stimuli is the hallmark hyperactive alarm of Salience dysfunction."
+    },
+    {
+      "name": "Lycopodium clavatum",
+      "feeling": "Fear of undertaking anything new or challenging, though ambitious and capable once started.",
+      "why": "Anticipatory avoidance of situations (not lack of desire) places this alongside Argentum nitricum on the phobic-avoidance end of Salience."
+    },
+    {
+      "name": "Phosphorus",
+      "feeling": "Wide-ranging emotional/sensory reactivity; vulnerable to environmental and emotional stimuli; \"hot flushes from excitement,\" fear of thunderstorms.",
+      "why": "Heightened autonomic and sensory reactivity to external stimuli (thunderstorms, excitement) reflects an easily-triggered salience/interoceptive system, even though the coping style is approach rather than avoidance."
+    },
+    {
+      "name": "Rhus toxicodendron",
+      "feeling": "Constant anxiety \"as if something is going to happen\"; restless, cannot rest in any position; hypervigilant at night.",
+      "why": "Persistent unlocalised somatic restlessness and hypervigilance without a clear external trigger is classic Salience-circuit background arousal."
+    },
+    {
+      "name": "Stramonium",
+      "feeling": "Acute terror of being abandoned in the dark; clings to whatever is near; familiar things suddenly feel strange.",
+      "why": "Acute panic with disorientation and clinging for safety is the somatic-overwhelm presentation of an over-firing alarm circuit."
+    },
+    {
+      "name": "Strontium carbonicum",
+      "feeling": "Anxious about new/unknown tasks; needs an experienced guide to venture out safely.",
+      "why": "Situational anticipatory anxiety resolved only by external reassurance mirrors Salience's avoidance-until-safety-confirmed pattern."
+    },
+    {
+      "name": "Theridion curassavicum",
+      "feeling": "Marked aggravation and startle from noise; fear of being trapped or killed if without a partner.",
+      "why": "Noise-triggered startle and sensory intolerance is a direct Salience marker."
+    },
+    {
+      "name": "Zincum metallicum",
+      "feeling": "Constant anxiety of being pursued/arrested; twitching, restless legs, a state of continuous \"ready alertness.\"",
+      "why": "Continuous (not paroxysmal) hyperarousal and motor restlessness is the sustained-alarm variant of Salience dysfunction."
+    }
+  ],
+  "neg": [
+    {
+      "name": "Ambra grisea",
+      "feeling": "Intense shame — feels intrinsically \"disgusting\"; catastrophic embarrassment if exposed.",
+      "why": "Catastrophic anticipation of humiliation and rejection if one's flaw is seen is rejection-sensitivity in its most acute form."
+    },
+    {
+      "name": "Aurum metallicum",
+      "feeling": "Crushing guilt and despair when impossible self-imposed duties are not met; suicidal when confidence of others is lost.",
+      "why": "Guilt, misery and mood-congruent despair triggered by (perceived) failure and disapproval is the Negative Affect biotype's dysphoria."
+    },
+    {
+      "name": "Bryonia alba",
+      "feeling": "Driven by fear of poverty/loss; dry, business-focused, irritable if disturbed from the effort to avert loss.",
+      "why": "The organising fear is of catastrophic material loss — a threat-avoidance drive coloured by irritability rather than somatic panic."
+    },
+    {
+      "name": "Calcarea bromata",
+      "feeling": "Fear of being falsely accused or pounced upon by the very person he depends on for security.",
+      "why": "Catastrophic anticipation of blame/punishment from a trusted figure is classic threat-perception with rejection overtones."
+    },
+    {
+      "name": "Calcarea fluorica",
+      "feeling": "Chronic fear that hard-won security is eroding and will collapse into poverty or ruin.",
+      "why": "Persistent catastrophic fear about an unstable future is mood-congruent negative-bias thinking about threat."
+    },
+    {
+      "name": "Calcarea iodata",
+      "feeling": "Fear of being betrayed or starved by the one depended on, masked by forced cheerfulness.",
+      "why": "Fear of betrayal with an underlying catastrophic expectation of harm is core Negative Affect, with the cheerful surface as compensation."
+    },
+    {
+      "name": "Calcarea phosphorica",
+      "feeling": "Feels unloved at home, seeks affection elsewhere, restless travel to find connection.",
+      "why": "The driving feeling is of being insufficiently loved — an attachment-threat / rejection theme, not anhedonia (the person actively seeks connection)."
+    },
+    {
+      "name": "Calcarea sulphurica",
+      "feeling": "Feels perpetually unappreciated and passed over; laments, jealous of others' recognition.",
+      "why": "Chronic sense of being undervalued/rejected by the people one depends on is rejection sensitivity."
+    },
+    {
+      "name": "Cantharis vesicatoria",
+      "feeling": "Violent rage when offended; terror of being throttled by cold hands in the dark.",
+      "why": "Fear and rage responses to perceived threat/injury, with catastrophic imagery, sit in the fear/anger cluster of Negative Affect."
+    },
+    {
+      "name": "Causticum",
+      "feeling": "Anxious for the safety of family/group; fears something bad will happen to them.",
+      "why": "Chronic catastrophic anticipation on behalf of loved ones is threat-focused, mood-congruent worry."
+    },
+    {
+      "name": "Chocolate",
+      "feeling": "Forsaken by early separation from mother; craves warmth, fears being injured, feels estranged from her world.",
+      "why": "Attachment rupture with lasting forsaken/estranged feeling is a rejection/abandonment-driven Negative Affect picture."
+    },
+    {
+      "name": "Cicuta virosa",
+      "feeling": "Deeply hurt in the past, regressed and fearful; hateful, suspicious and contemptuous of men.",
+      "why": "Trauma history producing lasting mistrust and hostility is exactly the early-life-trauma-sensitised amygdala picture the Brain Circuits text describes."
+    },
+    {
+      "name": "Cyclamen europaeum",
+      "feeling": "Guilt-ridden, feels like a criminal for an unspoken \"wrong,\" isolates in silent self-blame.",
+      "why": "Sustained guilt and self-blame with mood-congruent misery is core Negative Affect."
+    },
+    {
+      "name": "Drosera rotundifolia",
+      "feeling": "Feels persecuted, deceived and stabbed in the back by friends; suspicious, prone to violent outbursts.",
+      "why": "Catastrophizing about being betrayed by trusted people, with hostile/suspicious bias, matches Negative Affect's negative interpretive bias."
+    },
+    {
+      "name": "Elaps corallinus",
+      "feeling": "Fear of crashing down from a high social position; anxious for the safety and image of loved ones.",
+      "why": "Catastrophic fear of loss of standing/safety, chronically anticipated, is threat-biased cognition."
+    },
+    {
+      "name": "Hepar sulphur",
+      "feeling": "Feels terribly offended and humiliated by those meant to protect him; explosively violent when provoked.",
+      "why": "Misery and rage triggered by perceived humiliation from a trusted figure is Negative Affect's threat/rejection axis, at high intensity."
+    },
+    {
+      "name": "Hippomanes",
+      "feeling": "Suppressed aggression and sexuality collapse into suicidal despondency, sitting apart from the world.",
+      "why": "Despondent misery following suppression/inability to express instinct is dysphoric, mood-congruent despair."
+    },
+    {
+      "name": "Hura brasiliensis",
+      "feeling": "Feels castaway, despised, unlucky — like a leper whose friends have all deserted him.",
+      "why": "Hopeless, forsaken misery with catastrophic and mood-congruent narrative (\"once ruined, always ruined\") is textbook Negative Affect."
+    },
+    {
+      "name": "Hyoscyamus niger",
+      "feeling": "Sudden terror of being betrayed and deserted by the one depended on; jealous, suspicious, occasionally violent.",
+      "why": "Acute fear of abandonment/betrayal with jealousy and suspicion is a Negative Affect presentation, even though its onset is acute."
+    },
+    {
+      "name": "Kalium iodatum",
+      "feeling": "Fear of being betrayed or stabbed in the back by family, masked by forced wit and cheer.",
+      "why": "Underlying catastrophic fear of betrayal from the people one is most attached to."
+    },
+    {
+      "name": "Kalium sulphuricum",
+      "feeling": "Feels disgraced and insulted by the group whose esteem he seeks; discouraged, easily hurt.",
+      "why": "Chronic rejection sensitivity and disgrace-anticipation."
+    },
+    {
+      "name": "Lac caninum",
+      "feeling": "Low self-worth from constant unfavourable comparison; feels \"not good enough,\" despised.",
+      "why": "Persistent negative self-referential bias and rejection sensitivity from comparison is core Negative Affect."
+    },
+    {
+      "name": "Lac vaccinum defloratum",
+      "feeling": "Fears rejection by the community; a tremendous sense of injustice; bears suffering silently.",
+      "why": "Anticipated social rejection with a strong injustice/threat narrative."
+    },
+    {
+      "name": "Lachesis mutus",
+      "feeling": "Jealous rivalry, suspects conspiracies, must be \"one-up\" on a threatening competitor.",
+      "why": "Suspicious, threat-biased interpretation of relationships (rivals, conspiracies) is a Negative Affect cognitive pattern, with jealousy as the mood colour."
+    },
+    {
+      "name": "Magnesium muriaticum",
+      "feeling": "Fears betrayal by friends; reserved, keeps emotional distance to avoid being let down.",
+      "why": "Anticipated betrayal of trust driving guardedness is rejection-sensitive threat-bias."
+    },
+    {
+      "name": "Magnesium sulphuricum",
+      "feeling": "Anxiety about acceptance out of proportion to the situation; fears rejection if she does not appear \"good enough.\"",
+      "why": "Disproportionate catastrophic fear of rejection is mood-congruent negative bias."
+    },
+    {
+      "name": "Natrium sulphuricum",
+      "feeling": "Feels scorned and unappreciated; suicidal thoughts, guilt and remorse; \"succeeds never.\"",
+      "why": "Misery, guilt and a catastrophizing self-narrative (\"nothing ever works\") is classic Negative Affect dysphoria."
+    },
+    {
+      "name": "Nitricum acidum",
+      "feeling": "Constant sense of threat across health, work and relationships; hard, unforgiving, suspicious of enemies.",
+      "why": "Chronic threat-perception with hostile, mistrustful bias, and a fixed hard/enemy narrative, matches Negative Affect closely."
+    },
+    {
+      "name": "Palladium metallicum",
+      "feeling": "Feels neglected and insulted if she does not earn others' good opinion.",
+      "why": "Rejection sensitivity tied directly to fear of others' disapproval."
+    },
+    {
+      "name": "Paris quadrifolia",
+      "feeling": "The isolated, unattended child; feels inferior, seeks attention through foolish display.",
+      "why": "Chronic feeling of neglect/inferiority is a rejection-driven Negative Affect presentation."
+    },
+    {
+      "name": "Platinum metallicum",
+      "feeling": "Feels humiliated and crushed, must grow \"large\" to survive; contemptuous of ordinary people while isolated.",
+      "why": "Humiliation-driven catastrophic self-narrative with contempt as a defensive mood colour."
+    },
+    {
+      "name": "Plumbum metallicum",
+      "feeling": "Believes he is surrounded by murderers/conspirators; fears assassination.",
+      "why": "Extreme, fixed persecutory threat-bias is Negative Affect at its most severe."
+    },
+    {
+      "name": "Pulsatilla pratensis",
+      "feeling": "Feels forsaken if not given tenderness; weeps, moods shift easily, dependent on comfort.",
+      "why": "The organising fear is of abandonment/rejection, soothed only by consolation — an attachment-threat presentation."
+    },
+    {
+      "name": "Sulphur",
+      "feeling": "Feels scorned, put down, embarrassed; constant struggle to avoid humiliation and regain respect.",
+      "why": "Chronic anticipated scorn and embarrassment driving compensatory effort is rejection-sensitivity/threat-bias."
+    },
+    {
+      "name": "Veratrum album",
+      "feeling": "Has lost social standing and must regain it urgently by any means, even fraud or show.",
+      "why": "Catastrophic fear of ruined status driving desperate, threat-avoidant compensation."
+    }
+  ],
+  "pos": [
+    {
+      "name": "Helleborus niger",
+      "feeling": "Profoundly insensitive to both pleasure and pain; completely shut off, dull, unregistering of the world.",
+      "why": "The single clearest anhedonic remedy in the book — indifference to pleasure and pain alike is the Positive Affect biotype's defining \"blahs,\" taken to an extreme."
+    },
+    {
+      "name": "Magnesium carbonicum",
+      "feeling": "Deep unmet dependency needs are repressed; becomes placid, flat, emotionally low-key and undemanding.",
+      "why": "Repression producing a flattened, low-emotional-expression baseline (rather than active distress) mirrors the reward-blunted, motivation-poor presentation of Positive Affect dysfunction."
+    },
+    {
+      "name": "Phosphoricum acidum",
+      "feeling": "Exhausted from caring for others without reward; becomes dull, sluggish, indifferent, apathetic — \"unequal struggle.\"",
+      "why": "The endpoint is explicit apathy and indifference after effort goes unrewarded — a burnt-out reward system, not active misery."
+    },
+    {
+      "name": "Rheum palmatum",
+      "feeling": "The unattended child becomes indifferent to everything, asks for nothing, weeps without apparent cause.",
+      "why": "Indifference and lack of demand/initiative in the neglected state is a flattened-reward presentation (contrasted with the alternating demanding state, which is a separate, impulsive facet)."
+    },
+    {
+      "name": "Sepia officinalis",
+      "feeling": "Worn out from doing what she does not want to; becomes indifferent and averse even to husband and children — doesn't want treatment either.",
+      "why": "The well-known \"failed\" Sepia state is defined by indifference and aversion to the very relationships that should be rewarding — loss of reward signal from formerly valued things."
+    }
+  ],
+  "att": [
+    {
+      "name": "Baryta arsenicosa",
+      "feeling": "Total incapacity and dependence; shy, nervous, easily panicked but fundamentally unable to function alone.",
+      "why": "The core deficit is incapacity/inability to sustain independent function — closer to a cognitive-performance failure than an emotional one."
+    },
+    {
+      "name": "Baryta carbonica",
+      "feeling": "Childish, totally dependent, irresolute; lacks imagination and creativity; needs everything explained and confirmed repeatedly.",
+      "why": "Cognitive immaturity, poor imaginative/executive capacity, and reliance on others to think for him is a lethargic, under-recruited attentional/cognitive profile rather than active dyscontrol."
+    },
+    {
+      "name": "Baryta phosphorica",
+      "feeling": "Combines Baryta's incapacity with Phosphorus's need for care; can drift between independence and dependent anxiety.",
+      "why": "Same incapacity-driven cognitive profile as the other Baryta salts."
+    },
+    {
+      "name": "Baryta sulphurica",
+      "feeling": "Weak memory, aversion to work, loss of will; struggles to mix or integrate in new settings.",
+      "why": "Explicit weak memory and \"loss of will\" (weak initiation, not impulsivity) fits the lethargic, under-engaged Attention profile."
+    },
+    {
+      "name": "Graphites",
+      "feeling": "Cannot concentrate, restless when required to think or plan; absent-minded, easily confused, scattered.",
+      "why": "Direct concentration failure, absent-mindedness and inability to plan is the clearest Attention-circuit language in the book."
+    },
+    {
+      "name": "Picricum acidum",
+      "feeling": "Intellectual capacity feels stretched beyond its limit; brain-fatigue, dullness, mental work becomes impossible.",
+      "why": "Explicit cognitive/attentional collapse from overload — \"mental work impossible\" mirrors the Attention biotype's cognitive-slowing hallmark exactly."
+    },
+    {
+      "name": "Selenium metallicum",
+      "feeling": "Premature senility, weak memory, poor concentration, dullness and sluggishness.",
+      "why": "Weak memory and concentration difficulty as the leading physical/mental markers is a direct Attention-circuit match."
+    }
+  ],
+  "cog": [
+    {
+      "name": "Alumina",
+      "feeling": "Identity so suppressed he doesn't know what he wants; weak will, loses control of thought and movement, can act impulsively/violently.",
+      "why": "Explicit loss of executive/volitional control (\"weak will,\" impulsive acts he does not intend) is a direct Cognitive-Control failure."
+    },
+    {
+      "name": "Anacardium orientale",
+      "feeling": "\"Two wills\" constantly opposing each other — angel or devil; irresolute, impulsive, absent-minded.",
+      "why": "Literal inability to reconcile or inhibit opposing impulses is a textbook executive-inhibition failure."
+    },
+    {
+      "name": "Argentum metallicum",
+      "feeling": "Collapses under performance pressure — loses his voice, his power, his mind; \"prostration of mind,\" mental work becomes impossible.",
+      "why": "Executive/cognitive system failing specifically under demand, with alternating high-performance/total-collapse states, matches Cognitive Control's demand-sensitive breakdown."
+    },
+    {
+      "name": "Bufo rana",
+      "feeling": "Cannot postpone any urge — must gratify immediately, whatever the impulse.",
+      "why": "Inability to delay gratification is the clearest possible description of a failed inhibitory \"brake.\""
+    },
+    {
+      "name": "Carcinosinum",
+      "feeling": "Drives himself toward near-impossible standards; tremendous need for control and order amid inner chaos.",
+      "why": "The central struggle is explicitly one of control — over self and surroundings — an executive-control theme, even though it usually succeeds rather than fails outright."
+    },
+    {
+      "name": "Cina maritima",
+      "feeling": "Irritable tantrums, capricious demands, pushes away comfort even while wanting attention.",
+      "why": "Poor emotional self-regulation with reactive, uninhibited outbursts is a paediatric Cognitive-Control presentation."
+    },
+    {
+      "name": "Crocus sativus",
+      "feeling": "Alternates suddenly between affectionate attractiveness and violent rage, followed by quick repentance.",
+      "why": "Rapid, uninhibited swings between opposite emotional/behavioural states, with immediate remorse, is a dyscontrol pattern."
+    },
+    {
+      "name": "Ferrum metallicum",
+      "feeling": "Rigid, obstinate, \"always in the right\"; cannot yield or accept contradiction.",
+      "why": "Cognitive rigidity — inability to shift or accommodate — is the inflexibility facet of Cognitive Control dysfunction."
+    },
+    {
+      "name": "Fluoricum acidum",
+      "feeling": "Impulsively forms and breaks relationships; disinhibited sexuality and activity; indifferent to consequences for family.",
+      "why": "Disinhibited, impulsive behaviour across relationships and impulse indicates a poorly regulated behavioural \"brake.\""
+    },
+    {
+      "name": "Lyssinum",
+      "feeling": "Violent rage toward the one he is dependent on, immediately followed by profound repentance.",
+      "why": "The rage-then-repentance cycle is a direct description of impulse breaking through inhibition, then control reasserting itself."
+    },
+    {
+      "name": "Mercurius solubilis",
+      "feeling": "Sudden, impulsive violence when feeling dominated; extremes of precociousness and dullness; hasty, tumbling speech.",
+      "why": "Explosive impulsivity with poor inhibition of aggressive impulses is core Cognitive-Control dyscontrol."
+    },
+    {
+      "name": "Nux vomica",
+      "feeling": "Impatient, hard-driving, gets things done \"by hook or crook\"; explosive anger; craves stimulants; cannot delay relief.",
+      "why": "Impulsivity, low frustration tolerance and craving/addictive tendencies (\"insanity of drunkards\") are classic disinhibition markers."
+    },
+    {
+      "name": "Silicea terra",
+      "feeling": "Rigidly protects a fixed self-image; hard and inflexible, though inwardly yielding — \"can break but not bend.\"",
+      "why": "Fixed, inflexible cognitive style organised entirely around maintaining control of one's image is the rigidity face of Cognitive Control."
+    },
+    {
+      "name": "Staphisagria",
+      "feeling": "Suppresses anger to preserve dignity at all costs — until control finally breaks and trembling rage surfaces.",
+      "why": "The remedy's entire architecture is about inhibitory control of anger, and its failure when pushed too far — \"I know I shouldn't, but I can't stop it\" almost verbatim."
+    },
+    {
+      "name": "Sulphuricum acidum",
+      "feeling": "Tremendous hurry in everything — eating, walking, working; cannot do things fast enough.",
+      "why": "Inability to regulate pace/urgency, with anxious drivenness that cannot be slowed voluntarily, is an inhibitory-control theme."
+    },
+    {
+      "name": "Tarentula hispanica",
+      "feeling": "Impulsive, hysterical, flamboyant attention-seeking; hurried, mischievous, occasionally threatening.",
+      "why": "Impulsive, poorly-inhibited attention-seeking behaviour (including threatening displays) is a dyscontrol presentation."
+    },
+    {
+      "name": "Thuja occidentalis",
+      "feeling": "Obsessive-compulsive fixed ideas and behaviour patterns; terror of exposing the \"real,\" flawed self.",
+      "why": "Rigid, fixed-idea thinking that cannot be reasoned out of is the cognitive-rigidity face of Cognitive Control (Sankaran calls it explicitly a remedy \"for neurosis, with obsessive-compulsive traits\")."
+    },
+    {
+      "name": "Tuberculinum bovinum kent",
+      "feeling": "Cannot tolerate confinement or monotony; breaks out into rash, bold, sometimes destructive activity.",
+      "why": "Poor tolerance of restriction leading to impulsive, high-risk behaviour is a disinhibition pattern."
+    },
+    {
+      "name": "Viola odorata",
+      "feeling": "Emotion is normally suppressed entirely by intellect — until an occasional upsurge of feeling takes the person over.",
+      "why": "A chronic inhibitory strategy that occasionally fails outright is a direct illustration of the brakes-failing mechanism Cognitive Control describes."
+    }
+  ]
+}

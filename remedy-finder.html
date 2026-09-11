@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul of Remedies: Circuit-to-Remedy Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .slide-down { animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        input[type=range] { -webkit-appearance: none; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; }
+        input[type=range]:focus { outline: none; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500 p-1.5 rounded">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h1 class="font-semibold text-lg tracking-tight">Precision Homoeopathy <span class="text-slate-400 font-normal">| Circuit-to-Remedy Finder</span></h1>
+            </div>
+            <div class="text-xs text-slate-400 hidden sm:block">
+                Sankaran &bull; Soul of Remedies &times; Williams Taxonomy
+            </div>
+        </div>
+    </nav>
+
+    <!-- Intro strip -->
+    <div class="bg-emerald-50 border-b border-emerald-100">
+        <div class="max-w-7xl mx-auto px-6 py-3 text-xs text-emerald-900 flex items-start gap-2">
+            <i class="fa-solid fa-circle-info mt-0.5"></i>
+            <p>Phenotype the patient across the six neural circuits below. The tool identifies the dominant circuit and returns the shortlist of homoeopathic remedies from <span class="italic">The Soul of Remedies</span> whose core feeling is organised around that same axis. <span class="font-semibold">A clinical thinking tool &mdash; a shortlist to differentiate, not an automatic prescription.</span></p>
+        </div>
+    </div>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Assessment Form -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-5">
+                <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 border-b pb-2">Patient Interview Assessment</h2>
+
+                <form id="assessment-form" oninput="updateRealtime()">
+
+                    <!-- I. Default Mode -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">I</span>
+                            <h3 class="font-bold text-slate-800">Default Mode Circuit <span class="text-xs font-normal text-slate-500">(The "Rumination" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Repetitive Negative Thinking</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">"Broken record" loop, regret/worry.</span>
+                                    <select name="dmn_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Initial Insomnia</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Cannot sleep due to racing mind.</span>
+                                    <select name="dmn_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed "Internal" Distractibility</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Patient stares blankly, analyzing internally, misses conversation cues.</span>
+                                    <select name="dmn_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-blue-500">
+                                        <option value="0">0 - No observable distraction</option>
+                                        <option value="1">1 - Mild distraction</option>
+                                        <option value="2">2 - Frequent internal focus</option>
+                                        <option value="3">3 - Pervasive internal focus</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- II. Salience -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-red-100 text-red-700 flex items-center justify-center text-xs font-bold">II</span>
+                            <h3 class="font-bold text-slate-800">Salience Circuit <span class="text-xs font-normal text-slate-500">(The "Anxious Avoidance" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Somatic/Visceral Anxiety</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Palpitations, GI knots, dizziness, physical complaints.</span>
+                                    <select name="sal_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Sensory Overwhelm</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Exaggerated startle, bothered by lights/noise.</span>
+                                    <select name="sal_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed Avoidance Behavior</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Avoids tasks/places specifically due to physical intolerance of anxiety.</span>
+                                    <select name="sal_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-red-500">
+                                        <option value="0">0 - No avoidance</option>
+                                        <option value="1">1 - Some hesitancy</option>
+                                        <option value="2">2 - Clear avoidance</option>
+                                        <option value="3">3 - Disabling avoidance</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- III. Negative Affect -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-orange-100 text-orange-700 flex items-center justify-center text-xs font-bold">III</span>
+                            <h3 class="font-bold text-slate-800">Negative Affect Circuit <span class="text-xs font-normal text-slate-500">(The "Threat" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Dysphoria & Misery</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Intense sadness, guilt, "dark-tinted" view.</span>
+                                    <select name="neg_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Catastrophizing & Bias</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Expects worst outcome, interprets neutral as negative.</span>
+                                    <select name="neg_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Rejection Sensitivity / Trauma Hx</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Hypersensitive to criticism. History of early life trauma (ELT).</span>
+                                    <select name="neg_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-orange-500">
+                                        <option value="0">0 - Low sensitivity / No ELT</option>
+                                        <option value="1">1 - Mild sensitivity</option>
+                                        <option value="2">2 - High sensitivity</option>
+                                        <option value="3">3 - Extreme sensitivity / Confirmed ELT</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IV. Positive Affect -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">IV</span>
+                            <h3 class="font-bold text-slate-800">Positive Affect Circuit <span class="text-xs font-normal text-slate-500">(The "Reward" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Anhedonia ("The Blahs")</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Feeling flat, numb, empty (distinct from sadness).</span>
+                                    <select name="pos_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Lack of Motivation</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Lack of initiative, psychomotor retardation.</span>
+                                    <select name="pos_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Reward Anticipation Deficit</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">"Would you be excited if you won the lottery?" (Observed apathy).</span>
+                                    <select name="pos_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-green-500">
+                                        <option value="0">0 - Normal anticipation</option>
+                                        <option value="1">1 - Reduced excitement</option>
+                                        <option value="2">2 - Minimal excitement</option>
+                                        <option value="3">3 - Complete lack of reward response</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- V. Attention -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-yellow-100 text-yellow-700 flex items-center justify-center text-xs font-bold">V</span>
+                            <h3 class="font-bold text-slate-800">Attention Circuit <span class="text-xs font-normal text-slate-500">(The "Inattention" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Sustained Focus Deficit</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Cannot read a book, drifts in meetings.</span>
+                                    <select name="att_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Lethargy / Slowing</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Appears tired, slow processing speed.</span>
+                                    <select name="att_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed "Zoning Out"</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Errors of omission, mind drifting during interview.</span>
+                                    <select name="att_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-yellow-500">
+                                        <option value="0">0 - Alert and focused</option>
+                                        <option value="1">1 - Occasional drift</option>
+                                        <option value="2">2 - Frequent drift</option>
+                                        <option value="3">3 - Cannot sustain conversation</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VI. Cognitive Control -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 rounded bg-purple-100 text-purple-700 flex items-center justify-center text-xs font-bold">VI</span>
+                            <h3 class="font-bold text-slate-800">Cognitive Control Circuit <span class="text-xs font-normal text-slate-500">(The "Cognitive Dyscontrol" Biotype)</span></h3>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 space-y-4 border border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Executive Dysfunction / "Fog"</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Decision paralysis, difficulty planning.</span>
+                                    <select name="cog_1" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Emotional Dysregulation</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Inability to inhibit reactions (e.g., sudden crying/anger).</span>
+                                    <select name="cog_2" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - Absent</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe</option>
+                                    </select>
+                                </label>
+                                <label class="block md:col-span-2">
+                                    <span class="text-xs font-bold text-slate-600 block mb-1">Observed Impulsivity / Rigidity</span>
+                                    <span class="text-[10px] text-slate-500 block mb-2 italic">Difficulty switching topics, or impulsive speech (Errors of Commission).</span>
+                                    <select name="cog_3" class="w-full text-sm rounded border-slate-300 py-1.5 focus:ring-purple-500">
+                                        <option value="0">0 - No dysfunction</option>
+                                        <option value="1">1 - Mild</option>
+                                        <option value="2">2 - Moderate</option>
+                                        <option value="3">3 - Severe rigidity/impulsivity</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Materia Medica Reference (browsable) -->
+            <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-5">
+                <div class="flex items-center justify-between mb-4 border-b pb-2">
+                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Materia Medica Reference</h2>
+                    <span class="text-[10px] text-slate-400">96 remedies &bull; Sankaran</span>
+                </div>
+                <input id="remedy-search" type="text" oninput="renderReference()" placeholder="Search remedy or feeling (e.g. insomnia, betrayal, Natrium)..."
+                    class="w-full text-sm rounded border-slate-300 py-2 px-3 mb-4 focus:ring-emerald-500">
+                <div id="reference-list" class="space-y-6"></div>
+            </div>
+        </div>
+
+        <!-- Right Column: Real-time Analysis -->
+        <div class="lg:col-span-5 space-y-6">
+            <div class="sticky top-20">
+
+                <!-- Chart Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-5 mb-6">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Live Circuit Profile</h3>
+                    <div class="h-48">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Interpretation Card -->
+                <div id="interpretation-panel" class="bg-white rounded-lg shadow-sm border border-slate-200 p-0 overflow-hidden">
+                    <div class="bg-slate-800 text-white p-4">
+                        <h3 class="font-bold text-lg">Remedy Shortlist</h3>
+                        <p class="text-xs text-slate-400">Circuit-matched candidates to differentiate</p>
+                    </div>
+
+                    <div class="p-5 space-y-4">
+                        <div id="primary-biotype-box" class="hidden">
+                            <span class="text-xs font-bold text-slate-500 block mb-1">DOMINANT CIRCUIT</span>
+                            <h2 id="biotype-title" class="text-2xl font-bold text-emerald-700 leading-none mb-2">--</h2>
+                            <p id="biotype-cue" class="text-sm font-medium text-slate-700 mb-1 italic">--</p>
+                            <p id="biotype-hallmark" class="text-xs text-slate-500 mb-4 leading-relaxed">--</p>
+
+                            <div class="flex items-center justify-between mb-2 pt-3 border-t border-slate-100">
+                                <span class="text-[10px] font-bold text-emerald-800 uppercase">Candidate Remedies</span>
+                                <span id="remedy-count-badge" class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">--</span>
+                            </div>
+                            <div id="remedy-shortlist" class="space-y-2"></div>
+
+                            <div id="secondary-note" class="mt-4 pt-4 border-t border-slate-100 hidden">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Secondary Circuit</span>
+                                <p id="secondary-text" class="text-xs text-slate-500 italic">--</p>
+                            </div>
+
+                            <p class="mt-4 pt-4 border-t border-slate-100 text-[10px] text-slate-400 italic leading-relaxed">
+                                Prescribing must still proceed from full case-taking, rubric selection and differentiation as Sankaran describes. This shortlist only triages which family of remedies to consider first once the dominant circuit is identified at the bedside.
+                            </p>
+                        </div>
+
+                        <div id="empty-state" class="text-center py-8 text-slate-400">
+                            <i class="fa-solid fa-mortar-pestle text-3xl mb-2 opacity-50"></i>
+                            <p class="text-sm">Complete the assessment to generate a circuit-matched remedy shortlist.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 flex gap-3">
+                    <button onclick="emailReport()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded shadow transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Send Case Note
+                    </button>
+                    <button onclick="resetForm()" class="px-4 py-3 bg-white border border-slate-300 text-slate-600 rounded hover:bg-slate-50 font-medium">
+                        Reset
+                    </button>
+                </div>
+
+                <p class="text-[10px] text-center text-slate-400 mt-4">
+                    Report will be sent to default: architmehta98@gmail.com
+                </p>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-8">
+        <div class="max-w-7xl mx-auto px-6 py-4 text-[11px] text-slate-500 leading-relaxed">
+            <p class="font-semibold text-slate-600">Prepared for Dr. Archit Mehta, MD (Hom.) Psychiatry &mdash; Dr. Archit's Clinic, Surat.</p>
+            <p>Rule book: <span class="italic">Precision Psychiatry and the Neural Circuit Taxonomy</span> (Brain Circuits: Clinical Identification for Psychiatrists). Materia medica: Rajan Sankaran, <span class="italic">The Soul of Remedies</span>. Constitutional remedies are multidimensional; this maps the dominant, best-matching axis only.</p>
+        </div>
+    </footer>
+
+    <script>
+    const circuitMeta = {
+          "dmn": {
+                "roman": "I",
+                "name": "Default Mode",
+                "biotype": "Rumination",
+                "color": "blue",
+                "cue": "I can't shut my mind off.",
+                "hallmark": "Repetitive negative thinking that will not switch off; a “loop” fixed on past regret or future catastrophe; internal distractibility (pulled inward, not outward); initial insomnia because the mind will not quieten enough to fall asleep.",
+                "count": 10
+          },
+          "sal": {
+                "roman": "II",
+                "name": "Salience",
+                "biotype": "Anxious Avoidance",
+                "color": "red",
+                "cue": "I feel anxiety in my body.",
+                "hallmark": "Anxiety lived in the body — palpitation, visceral distress, startle, overwhelm by ordinary sensory input; avoidance not from lack of desire but because the physical sensation of the anxiety is intolerable.",
+                "count": 20
+          },
+          "neg": {
+                "roman": "III",
+                "name": "Negative Affect",
+                "biotype": "Threat",
+                "color": "orange",
+                "cue": "I feel threatened / miserable / unloved.",
+                "hallmark": "Misery and dysphoria (not numbness); catastrophizing and a mood-congruent negative bias; rejection sensitivity; often a history of trauma, betrayal, or chronic threat that sensitised the system.",
+                "count": 35
+          },
+          "pos": {
+                "roman": "IV",
+                "name": "Positive Affect",
+                "biotype": "Reward",
+                "color": "green",
+                "cue": "I feel numb/empty.",
+                "hallmark": "Anhedonia and apathy rather than sadness — flat, numb, “I don't care about anything”; loss of motivation and initiative; withdrawal because nothing offers a reward signal, not because of fear or rumination.",
+                "count": 5
+          },
+          "att": {
+                "roman": "V",
+                "name": "Attention",
+                "biotype": "Inattention",
+                "color": "yellow",
+                "cue": "I can't focus / I feel foggy and slow (but not distressed).",
+                "hallmark": "Concentration deficits, lethargy and cognitive slowing rather than emotional distress; drifting, zoning out, poor memory, being “checked out.” Talk therapy often does not “land” because the attentional channel is closed.",
+                "count": 7
+          },
+          "cog": {
+                "roman": "VI",
+                "name": "Cognitive Control",
+                "biotype": "Cognitive Dyscontrol",
+                "color": "purple",
+                "cue": "I know I shouldn't, but I can't stop it / I can't decide anything.",
+                "hallmark": "“Brain fog,” executive dysfunction and impulsivity; the person cannot inhibit an automatic thought, emotional reaction or action even when they know they should — the brain's “brakes” fail. Decision paralysis and cognitive rigidity are the other face of the same failure.",
+                "count": 19
+          }
+    };
+
+    // Remedy database — 96 remedies from Rajan Sankaran's *The Soul of Remedies*,
+    // mapped to the six Williams-taxonomy neural circuits (source docx).
+    const remedyDB = {
+      dmn: [
+        { n: "Anhalonium lewinii", f: "Loss of ego-boundary; merges with surroundings; dissociates from a felt void in identity.", w: "The pathology is a disturbance of self-referential processing itself — depersonalisation and boundary-loss are Default-Mode phenomena turned pathological, not fear or somatic arousal." },
+        { n: "Antimonium crudum", f: "World is disappointing, so he withdraws and idealises — lives inside nostalgic, sentimental fantasy rather than facing reality.", w: "Sustained internal idealisation/fantasy that substitutes for engagement with the present is a rumination-adjacent loop — attention is captured by an internally generated narrative." },
+        { n: "Cannabis indica", f: "Isolated in a \"glass house\"; builds elaborate fantasies and exaggerated inner perceptions rather than stepping into the outer world.", w: "Classic internally-generated, self-referential narrative that displaces external engagement — the mind is \"sticky\" on its own content." },
+        { n: "China officinalis", f: "Feels persecuted and held back, so compensates by fantasising and theorising achievements — \"builds castles in the air.\"", w: "Chronic compensatory fantasy/theorising is a fixed internal loop standing in for real-world action, matching DMN's inward pull." },
+        { n: "Coffea cruda", f: "Mind racing with ideas and plans, cannot stop being mentally/physically active, marked insomnia from overactive thought.", w: "Hyperactive, un-shutoffable ideation plus classic initial insomnia from mental overactivity is a near-literal match to the DM symptom profile." },
+        { n: "Kalium phosphoricum", f: "Mind full of thought and activity when unsupported; insomnia; eventually mental exhaustion (\"impotency of his mind\").", w: "Insomnia driven by racing, anxious thought that cannot disengage — the DM \"switch\" failing to turn off at night." },
+        { n: "Medorrhinum", f: "Absorbed in his own thoughts, loses the thread of conversation, time distorts, familiar things feel unfamiliar.", w: "Absent-mindedness and losing track of the external conversation because internal processing dominates is a direct DM marker (\"internal distractibility\")." },
+        { n: "Naja tripudians", f: "Brooding, suicidal preoccupation with having done everything wrong; a split mind caught replaying the conflict.", w: "Brooding on irreversible past wrongs that cannot be resolved is repetitive negative thinking focused on regret — DM's core loop." },
+        { n: "Natrium carbonicum", f: "Ennui and apprehension from being alone; blames self endlessly (\"does everything wrong\"); estranged, silently grieving.", w: "Melancholic dwelling and self-blame that cannot be put down is the DM \"broken record\" of regret." },
+        { n: "Natrium muriaticum", f: "Dwells on past disagreeable occurrences, cannot forget; an idea \"clings\" and prevents sleep; silent grief, revengeful replaying.", w: "The single clearest Default-Mode match in the Materia Medica — Sankaran's own description (\"an idea clings, prevents sleep\") is almost a paraphrase of the biotype's initial-insomnia-from-rumination marker." },
+      ],
+      sal: [
+        { n: "Aconitum napellus", f: "Sudden, intense panic from outside threat — racing pulse, palpitation, restlessness, cannot sit still.", w: "The textbook acute somatic panic attack: sudden autonomic storm, startle, restlessness — Salience's hyperactive alarm in its purest acute form." },
+        { n: "Argentum nitricum", f: "Anticipatory, phobic anxiety before performance or in closed/high places; fear of losing self-control; claustrophobia.", w: "Situational, autonomic, avoidance-driven anxiety (claustrophobia, stage fright, hurried restlessness) is the phobic face of an over-active salience alarm." },
+        { n: "Arsenicum album", f: "Hypochondriacal anxiety about health and security; restless, fastidious, cannot settle until everything is in order.", w: "Explicitly named in the Brain Circuits text itself as the somatic/hypochondriacal presentation of Salience dysfunction." },
+        { n: "Belladonna", f: "Sudden violent threat, must escape; throbbing carotids, palpitation, intense acute arousal that vanishes as fast as it came.", w: "Paroxysmal, purely somatic panic-and-escape reaction — alarm system firing and resetting abruptly." },
+        { n: "Calcarea arsenicosa", f: "Insecure and mistrustful; severe palpitation triggered by the least emotional upset.", w: "Palpitation from minimal emotional trigger is a direct autonomic/somatic marker of an over-sensitised alarm circuit." },
+        { n: "Calcarea carbonica", f: "Needs stability/protection; overwhelmed and retreating from cruelty, horror, or anything sensorily/emotionally intense.", w: "Avoidance is driven by being overwhelmed by external stimuli (violence on TV, loud events) rather than by low mood — a Salience-type overwhelm/avoidance pattern." },
+        { n: "Calcarea silicata", f: "Anticipatory anxiety before exams/interviews; uses health-anxiety to avoid performance demands.", w: "Anticipatory somatic anxiety used defensively to avoid exposure is characteristic Salience-circuit avoidance." },
+        { n: "Coca", f: "Feels it is too risky to leave the safety of his \"castle\"; isolates to avoid external threat while under pressure to perform.", w: "Avoidance driven by perceived external danger/risk, with somatic stage-fright, situates this in the threat-detection/avoidance axis of Salience." },
+        { n: "Cocculus indicus", f: "Nerves become \"raw\"; marked oversensitivity to noise, motion, odours; dulled, giddy, wants to lie still with eyes closed.", w: "Sensory-flooding and hypersensitivity to ordinary stimuli is close to a textbook description of Salience's broken sensory \"filter.\"" },
+        { n: "Cuprum metallicum", f: "Feels attacked, must defend; reactions come in sudden paroxysmal spasms/convulsions rather than continuously.", w: "Paroxysmal, all-or-nothing threat-response wired for sudden defensive mobilisation matches the alarm-circuit's episodic hyperactivation." },
+        { n: "Gelsemium sempervirens", f: "Ailments from anticipation/shock/bad news; loses control and balance; can freeze into a paralytic, immobile state.", w: "Anticipatory dread that culminates in a \"frozen\" collapse is exactly the overwhelmed/frozen reaction the Brain Circuits text uses to distinguish Salience from Negative Affect." },
+        { n: "Kalium arsenicosum", f: "Anxious to the point of feeling \"crazy\"; extremely edgy, startles at the slightest noise.", w: "Marked startle and edge-of-the-seat autonomic arousal is a direct Salience marker." },
+        { n: "Kalium carbonicum", f: "Fear of being alone; startles easily from noise or touch; frightened at trifles.", w: "Trigger-happy startle response to minor stimuli is the hallmark hyperactive alarm of Salience dysfunction." },
+        { n: "Lycopodium clavatum", f: "Fear of undertaking anything new or challenging, though ambitious and capable once started.", w: "Anticipatory avoidance of situations (not lack of desire) places this alongside Argentum nitricum on the phobic-avoidance end of Salience." },
+        { n: "Phosphorus", f: "Wide-ranging emotional/sensory reactivity; vulnerable to environmental and emotional stimuli; \"hot flushes from excitement,\" fear of thunderstorms.", w: "Heightened autonomic and sensory reactivity to external stimuli (thunderstorms, excitement) reflects an easily-triggered salience/interoceptive system, even though the coping style is approach rather than avoidance." },
+        { n: "Rhus toxicodendron", f: "Constant anxiety \"as if something is going to happen\"; restless, cannot rest in any position; hypervigilant at night.", w: "Persistent unlocalised somatic restlessness and hypervigilance without a clear external trigger is classic Salience-circuit background arousal." },
+        { n: "Stramonium", f: "Acute terror of being abandoned in the dark; clings to whatever is near; familiar things suddenly feel strange.", w: "Acute panic with disorientation and clinging for safety is the somatic-overwhelm presentation of an over-firing alarm circuit." },
+        { n: "Strontium carbonicum", f: "Anxious about new/unknown tasks; needs an experienced guide to venture out safely.", w: "Situational anticipatory anxiety resolved only by external reassurance mirrors Salience's avoidance-until-safety-confirmed pattern." },
+        { n: "Theridion curassavicum", f: "Marked aggravation and startle from noise; fear of being trapped or killed if without a partner.", w: "Noise-triggered startle and sensory intolerance is a direct Salience marker." },
+        { n: "Zincum metallicum", f: "Constant anxiety of being pursued/arrested; twitching, restless legs, a state of continuous \"ready alertness.\"", w: "Continuous (not paroxysmal) hyperarousal and motor restlessness is the sustained-alarm variant of Salience dysfunction." },
+      ],
+      neg: [
+        { n: "Ambra grisea", f: "Intense shame — feels intrinsically \"disgusting\"; catastrophic embarrassment if exposed.", w: "Catastrophic anticipation of humiliation and rejection if one's flaw is seen is rejection-sensitivity in its most acute form." },
+        { n: "Aurum metallicum", f: "Crushing guilt and despair when impossible self-imposed duties are not met; suicidal when confidence of others is lost.", w: "Guilt, misery and mood-congruent despair triggered by (perceived) failure and disapproval is the Negative Affect biotype's dysphoria." },
+        { n: "Bryonia alba", f: "Driven by fear of poverty/loss; dry, business-focused, irritable if disturbed from the effort to avert loss.", w: "The organising fear is of catastrophic material loss — a threat-avoidance drive coloured by irritability rather than somatic panic." },
+        { n: "Calcarea bromata", f: "Fear of being falsely accused or pounced upon by the very person he depends on for security.", w: "Catastrophic anticipation of blame/punishment from a trusted figure is classic threat-perception with rejection overtones." },
+        { n: "Calcarea fluorica", f: "Chronic fear that hard-won security is eroding and will collapse into poverty or ruin.", w: "Persistent catastrophic fear about an unstable future is mood-congruent negative-bias thinking about threat." },
+        { n: "Calcarea iodata", f: "Fear of being betrayed or starved by the one depended on, masked by forced cheerfulness.", w: "Fear of betrayal with an underlying catastrophic expectation of harm is core Negative Affect, with the cheerful surface as compensation." },
+        { n: "Calcarea phosphorica", f: "Feels unloved at home, seeks affection elsewhere, restless travel to find connection.", w: "The driving feeling is of being insufficiently loved — an attachment-threat / rejection theme, not anhedonia (the person actively seeks connection)." },
+        { n: "Calcarea sulphurica", f: "Feels perpetually unappreciated and passed over; laments, jealous of others' recognition.", w: "Chronic sense of being undervalued/rejected by the people one depends on is rejection sensitivity." },
+        { n: "Cantharis vesicatoria", f: "Violent rage when offended; terror of being throttled by cold hands in the dark.", w: "Fear and rage responses to perceived threat/injury, with catastrophic imagery, sit in the fear/anger cluster of Negative Affect." },
+        { n: "Causticum", f: "Anxious for the safety of family/group; fears something bad will happen to them.", w: "Chronic catastrophic anticipation on behalf of loved ones is threat-focused, mood-congruent worry." },
+        { n: "Chocolate", f: "Forsaken by early separation from mother; craves warmth, fears being injured, feels estranged from her world.", w: "Attachment rupture with lasting forsaken/estranged feeling is a rejection/abandonment-driven Negative Affect picture." },
+        { n: "Cicuta virosa", f: "Deeply hurt in the past, regressed and fearful; hateful, suspicious and contemptuous of men.", w: "Trauma history producing lasting mistrust and hostility is exactly the early-life-trauma-sensitised amygdala picture the Brain Circuits text describes." },
+        { n: "Cyclamen europaeum", f: "Guilt-ridden, feels like a criminal for an unspoken \"wrong,\" isolates in silent self-blame.", w: "Sustained guilt and self-blame with mood-congruent misery is core Negative Affect." },
+        { n: "Drosera rotundifolia", f: "Feels persecuted, deceived and stabbed in the back by friends; suspicious, prone to violent outbursts.", w: "Catastrophizing about being betrayed by trusted people, with hostile/suspicious bias, matches Negative Affect's negative interpretive bias." },
+        { n: "Elaps corallinus", f: "Fear of crashing down from a high social position; anxious for the safety and image of loved ones.", w: "Catastrophic fear of loss of standing/safety, chronically anticipated, is threat-biased cognition." },
+        { n: "Hepar sulphur", f: "Feels terribly offended and humiliated by those meant to protect him; explosively violent when provoked.", w: "Misery and rage triggered by perceived humiliation from a trusted figure is Negative Affect's threat/rejection axis, at high intensity." },
+        { n: "Hippomanes", f: "Suppressed aggression and sexuality collapse into suicidal despondency, sitting apart from the world.", w: "Despondent misery following suppression/inability to express instinct is dysphoric, mood-congruent despair." },
+        { n: "Hura brasiliensis", f: "Feels castaway, despised, unlucky — like a leper whose friends have all deserted him.", w: "Hopeless, forsaken misery with catastrophic and mood-congruent narrative (\"once ruined, always ruined\") is textbook Negative Affect." },
+        { n: "Hyoscyamus niger", f: "Sudden terror of being betrayed and deserted by the one depended on; jealous, suspicious, occasionally violent.", w: "Acute fear of abandonment/betrayal with jealousy and suspicion is a Negative Affect presentation, even though its onset is acute." },
+        { n: "Kalium iodatum", f: "Fear of being betrayed or stabbed in the back by family, masked by forced wit and cheer.", w: "Underlying catastrophic fear of betrayal from the people one is most attached to." },
+        { n: "Kalium sulphuricum", f: "Feels disgraced and insulted by the group whose esteem he seeks; discouraged, easily hurt.", w: "Chronic rejection sensitivity and disgrace-anticipation." },
+        { n: "Lac caninum", f: "Low self-worth from constant unfavourable comparison; feels \"not good enough,\" despised.", w: "Persistent negative self-referential bias and rejection sensitivity from comparison is core Negative Affect." },
+        { n: "Lac vaccinum defloratum", f: "Fears rejection by the community; a tremendous sense of injustice; bears suffering silently.", w: "Anticipated social rejection with a strong injustice/threat narrative." },
+        { n: "Lachesis mutus", f: "Jealous rivalry, suspects conspiracies, must be \"one-up\" on a threatening competitor.", w: "Suspicious, threat-biased interpretation of relationships (rivals, conspiracies) is a Negative Affect cognitive pattern, with jealousy as the mood colour." },
+        { n: "Magnesium muriaticum", f: "Fears betrayal by friends; reserved, keeps emotional distance to avoid being let down.", w: "Anticipated betrayal of trust driving guardedness is rejection-sensitive threat-bias." },
+        { n: "Magnesium sulphuricum", f: "Anxiety about acceptance out of proportion to the situation; fears rejection if she does not appear \"good enough.\"", w: "Disproportionate catastrophic fear of rejection is mood-congruent negative bias." },
+        { n: "Natrium sulphuricum", f: "Feels scorned and unappreciated; suicidal thoughts, guilt and remorse; \"succeeds never.\"", w: "Misery, guilt and a catastrophizing self-narrative (\"nothing ever works\") is classic Negative Affect dysphoria." },
+        { n: "Nitricum acidum", f: "Constant sense of threat across health, work and relationships; hard, unforgiving, suspicious of enemies.", w: "Chronic threat-perception with hostile, mistrustful bias, and a fixed hard/enemy narrative, matches Negative Affect closely." },
+        { n: "Palladium metallicum", f: "Feels neglected and insulted if she does not earn others' good opinion.", w: "Rejection sensitivity tied directly to fear of others' disapproval." },
+        { n: "Paris quadrifolia", f: "The isolated, unattended child; feels inferior, seeks attention through foolish display.", w: "Chronic feeling of neglect/inferiority is a rejection-driven Negative Affect presentation." },
+        { n: "Platinum metallicum", f: "Feels humiliated and crushed, must grow \"large\" to survive; contemptuous of ordinary people while isolated.", w: "Humiliation-driven catastrophic self-narrative with contempt as a defensive mood colour." },
+        { n: "Plumbum metallicum", f: "Believes he is surrounded by murderers/conspirators; fears assassination.", w: "Extreme, fixed persecutory threat-bias is Negative Affect at its most severe." },
+        { n: "Pulsatilla pratensis", f: "Feels forsaken if not given tenderness; weeps, moods shift easily, dependent on comfort.", w: "The organising fear is of abandonment/rejection, soothed only by consolation — an attachment-threat presentation." },
+        { n: "Sulphur", f: "Feels scorned, put down, embarrassed; constant struggle to avoid humiliation and regain respect.", w: "Chronic anticipated scorn and embarrassment driving compensatory effort is rejection-sensitivity/threat-bias." },
+        { n: "Veratrum album", f: "Has lost social standing and must regain it urgently by any means, even fraud or show.", w: "Catastrophic fear of ruined status driving desperate, threat-avoidant compensation." },
+      ],
+      pos: [
+        { n: "Helleborus niger", f: "Profoundly insensitive to both pleasure and pain; completely shut off, dull, unregistering of the world.", w: "The single clearest anhedonic remedy in the book — indifference to pleasure and pain alike is the Positive Affect biotype's defining \"blahs,\" taken to an extreme." },
+        { n: "Magnesium carbonicum", f: "Deep unmet dependency needs are repressed; becomes placid, flat, emotionally low-key and undemanding.", w: "Repression producing a flattened, low-emotional-expression baseline (rather than active distress) mirrors the reward-blunted, motivation-poor presentation of Positive Affect dysfunction." },
+        { n: "Phosphoricum acidum", f: "Exhausted from caring for others without reward; becomes dull, sluggish, indifferent, apathetic — \"unequal struggle.\"", w: "The endpoint is explicit apathy and indifference after effort goes unrewarded — a burnt-out reward system, not active misery." },
+        { n: "Rheum palmatum", f: "The unattended child becomes indifferent to everything, asks for nothing, weeps without apparent cause.", w: "Indifference and lack of demand/initiative in the neglected state is a flattened-reward presentation (contrasted with the alternating demanding state, which is a separate, impulsive facet)." },
+        { n: "Sepia officinalis", f: "Worn out from doing what she does not want to; becomes indifferent and averse even to husband and children — doesn't want treatment either.", w: "The well-known \"failed\" Sepia state is defined by indifference and aversion to the very relationships that should be rewarding — loss of reward signal from formerly valued things." },
+      ],
+      att: [
+        { n: "Baryta arsenicosa", f: "Total incapacity and dependence; shy, nervous, easily panicked but fundamentally unable to function alone.", w: "The core deficit is incapacity/inability to sustain independent function — closer to a cognitive-performance failure than an emotional one." },
+        { n: "Baryta carbonica", f: "Childish, totally dependent, irresolute; lacks imagination and creativity; needs everything explained and confirmed repeatedly.", w: "Cognitive immaturity, poor imaginative/executive capacity, and reliance on others to think for him is a lethargic, under-recruited attentional/cognitive profile rather than active dyscontrol." },
+        { n: "Baryta phosphorica", f: "Combines Baryta's incapacity with Phosphorus's need for care; can drift between independence and dependent anxiety.", w: "Same incapacity-driven cognitive profile as the other Baryta salts." },
+        { n: "Baryta sulphurica", f: "Weak memory, aversion to work, loss of will; struggles to mix or integrate in new settings.", w: "Explicit weak memory and \"loss of will\" (weak initiation, not impulsivity) fits the lethargic, under-engaged Attention profile." },
+        { n: "Graphites", f: "Cannot concentrate, restless when required to think or plan; absent-minded, easily confused, scattered.", w: "Direct concentration failure, absent-mindedness and inability to plan is the clearest Attention-circuit language in the book." },
+        { n: "Picricum acidum", f: "Intellectual capacity feels stretched beyond its limit; brain-fatigue, dullness, mental work becomes impossible.", w: "Explicit cognitive/attentional collapse from overload — \"mental work impossible\" mirrors the Attention biotype's cognitive-slowing hallmark exactly." },
+        { n: "Selenium metallicum", f: "Premature senility, weak memory, poor concentration, dullness and sluggishness.", w: "Weak memory and concentration difficulty as the leading physical/mental markers is a direct Attention-circuit match." },
+      ],
+      cog: [
+        { n: "Alumina", f: "Identity so suppressed he doesn't know what he wants; weak will, loses control of thought and movement, can act impulsively/violently.", w: "Explicit loss of executive/volitional control (\"weak will,\" impulsive acts he does not intend) is a direct Cognitive-Control failure." },
+        { n: "Anacardium orientale", f: "\"Two wills\" constantly opposing each other — angel or devil; irresolute, impulsive, absent-minded.", w: "Literal inability to reconcile or inhibit opposing impulses is a textbook executive-inhibition failure." },
+        { n: "Argentum metallicum", f: "Collapses under performance pressure — loses his voice, his power, his mind; \"prostration of mind,\" mental work becomes impossible.", w: "Executive/cognitive system failing specifically under demand, with alternating high-performance/total-collapse states, matches Cognitive Control's demand-sensitive breakdown." },
+        { n: "Bufo rana", f: "Cannot postpone any urge — must gratify immediately, whatever the impulse.", w: "Inability to delay gratification is the clearest possible description of a failed inhibitory \"brake.\"" },
+        { n: "Carcinosinum", f: "Drives himself toward near-impossible standards; tremendous need for control and order amid inner chaos.", w: "The central struggle is explicitly one of control — over self and surroundings — an executive-control theme, even though it usually succeeds rather than fails outright." },
+        { n: "Cina maritima", f: "Irritable tantrums, capricious demands, pushes away comfort even while wanting attention.", w: "Poor emotional self-regulation with reactive, uninhibited outbursts is a paediatric Cognitive-Control presentation." },
+        { n: "Crocus sativus", f: "Alternates suddenly between affectionate attractiveness and violent rage, followed by quick repentance.", w: "Rapid, uninhibited swings between opposite emotional/behavioural states, with immediate remorse, is a dyscontrol pattern." },
+        { n: "Ferrum metallicum", f: "Rigid, obstinate, \"always in the right\"; cannot yield or accept contradiction.", w: "Cognitive rigidity — inability to shift or accommodate — is the inflexibility facet of Cognitive Control dysfunction." },
+        { n: "Fluoricum acidum", f: "Impulsively forms and breaks relationships; disinhibited sexuality and activity; indifferent to consequences for family.", w: "Disinhibited, impulsive behaviour across relationships and impulse indicates a poorly regulated behavioural \"brake.\"" },
+        { n: "Lyssinum", f: "Violent rage toward the one he is dependent on, immediately followed by profound repentance.", w: "The rage-then-repentance cycle is a direct description of impulse breaking through inhibition, then control reasserting itself." },
+        { n: "Mercurius solubilis", f: "Sudden, impulsive violence when feeling dominated; extremes of precociousness and dullness; hasty, tumbling speech.", w: "Explosive impulsivity with poor inhibition of aggressive impulses is core Cognitive-Control dyscontrol." },
+        { n: "Nux vomica", f: "Impatient, hard-driving, gets things done \"by hook or crook\"; explosive anger; craves stimulants; cannot delay relief.", w: "Impulsivity, low frustration tolerance and craving/addictive tendencies (\"insanity of drunkards\") are classic disinhibition markers." },
+        { n: "Silicea terra", f: "Rigidly protects a fixed self-image; hard and inflexible, though inwardly yielding — \"can break but not bend.\"", w: "Fixed, inflexible cognitive style organised entirely around maintaining control of one's image is the rigidity face of Cognitive Control." },
+        { n: "Staphisagria", f: "Suppresses anger to preserve dignity at all costs — until control finally breaks and trembling rage surfaces.", w: "The remedy's entire architecture is about inhibitory control of anger, and its failure when pushed too far — \"I know I shouldn't, but I can't stop it\" almost verbatim." },
+        { n: "Sulphuricum acidum", f: "Tremendous hurry in everything — eating, walking, working; cannot do things fast enough.", w: "Inability to regulate pace/urgency, with anxious drivenness that cannot be slowed voluntarily, is an inhibitory-control theme." },
+        { n: "Tarentula hispanica", f: "Impulsive, hysterical, flamboyant attention-seeking; hurried, mischievous, occasionally threatening.", w: "Impulsive, poorly-inhibited attention-seeking behaviour (including threatening displays) is a dyscontrol presentation." },
+        { n: "Thuja occidentalis", f: "Obsessive-compulsive fixed ideas and behaviour patterns; terror of exposing the \"real,\" flawed self.", w: "Rigid, fixed-idea thinking that cannot be reasoned out of is the cognitive-rigidity face of Cognitive Control (Sankaran calls it explicitly a remedy \"for neurosis, with obsessive-compulsive traits\")." },
+        { n: "Tuberculinum bovinum kent", f: "Cannot tolerate confinement or monotony; breaks out into rash, bold, sometimes destructive activity.", w: "Poor tolerance of restriction leading to impulsive, high-risk behaviour is a disinhibition pattern." },
+        { n: "Viola odorata", f: "Emotion is normally suppressed entirely by intellect — until an occasional upsurge of feeling takes the person over.", w: "A chronic inhibitory strategy that occasionally fails outright is a direct illustration of the brakes-failing mechanism Cognitive Control describes." },
+      ],
+    };
+
+    const order = ["dmn","sal","neg","pos","att","cog"];
+    const chartColors = {
+        dmn: "#3b82f6", sal: "#ef4444", neg: "#f97316",
+        pos: "#22c55e", att: "#eab308", cog: "#a855f7"
+    };
+
+    // Chart Initialization
+    let radarChart;
+
+    function initChart() {
+        // The radar chart is a visual aid; if Chart.js is unavailable the
+        // remedy shortlist must still work, so failures here are non-fatal.
+        if (typeof Chart === 'undefined') return;
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        radarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: order.map(k => circuitMeta[k].name),
+                datasets: [{
+                    label: 'Dysfunction Severity',
+                    data: [0, 0, 0, 0, 0, 0],
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 9,
+                        ticks: { display: false, stepSize: 3 },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: { font: { size: 10, weight: 'bold' }, color: '#475569' }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    function getScores() {
+        const form = document.getElementById('assessment-form');
+        const fd = new FormData(form);
+        const s = {};
+        order.forEach(k => {
+            s[k] = parseInt(fd.get(k + '_1')) + parseInt(fd.get(k + '_2')) + parseInt(fd.get(k + '_3'));
+        });
+        return s;
+    }
+
+    function rankCircuits(scores) {
+        return order.map(k => ({ key: k, val: scores[k] }))
+                    .sort((a, b) => b.val - a.val);
+    }
+
+    function updateRealtime() {
+        const scores = getScores();
+        if (radarChart) {
+            radarChart.data.datasets[0].data = order.map(k => scores[k]);
+            radarChart.update();
+        }
+
+        const ranked = rankCircuits(scores);
+        const top = ranked[0];
+
+        const emptyState = document.getElementById('empty-state');
+        const resultBox = document.getElementById('primary-biotype-box');
+
+        if (top.val > 0) {
+            emptyState.classList.add('hidden');
+            resultBox.classList.remove('hidden');
+            resultBox.classList.add('slide-down');
+
+            const m = circuitMeta[top.key];
+            document.getElementById('biotype-title').innerText = m.name + ' Biotype';
+            document.getElementById('biotype-cue').innerText = '“' + m.cue + '”';
+            document.getElementById('biotype-hallmark').innerText = m.hallmark;
+
+            const remedies = remedyDB[top.key];
+            document.getElementById('remedy-count-badge').innerText = remedies.length + ' remedies';
+
+            const listEl = document.getElementById('remedy-shortlist');
+            listEl.innerHTML = remedies.map(r => `
+                <details class="bg-emerald-50 border border-emerald-100 rounded group">
+                    <summary class="cursor-pointer list-none px-3 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold text-emerald-900">${r.n}</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-emerald-600 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="px-3 pb-3 pt-1 text-xs text-slate-600 space-y-1.5">
+                        <p><span class="font-bold text-slate-500">Core feeling:</span> ${r.f}</p>
+                        <p><span class="font-bold text-slate-500">Why this circuit:</span> ${r.w}</p>
+                    </div>
+                </details>`).join('');
+
+            // Secondary circuit note when close/co-elevated
+            const second = ranked[1];
+            const secNote = document.getElementById('secondary-note');
+            if (second.val > 0 && second.val >= top.val - 1) {
+                secNote.classList.remove('hidden');
+                document.getElementById('secondary-text').innerText =
+                    'Scores also elevated on ' + circuitMeta[second.key].name +
+                    ' (' + second.val + '/9). Several remedies straddle two circuits — consider both shortlists where the picture is mixed.';
+            } else {
+                secNote.classList.add('hidden');
+            }
+        } else {
+            emptyState.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('assessment-form').reset();
+        updateRealtime();
+    }
+
+    function emailReport() {
+        const scores = getScores();
+        const ranked = rankCircuits(scores);
+        const top = ranked[0];
+        const date = new Date().toLocaleDateString();
+
+        let body = 'HOMOEOPATHIC CASE NOTE — Circuit-to-Remedy Triage\n';
+        body += 'Date: ' + date + '\n';
+        body += 'Protocol: Williams Neural Circuit Taxonomy × Sankaran, The Soul of Remedies\n\n';
+
+        if (top.val > 0) {
+            const m = circuitMeta[top.key];
+            body += 'DOMINANT CIRCUIT: ' + m.name + ' ("' + m.biotype + '" Biotype)\n';
+            body += 'Severity Score: ' + top.val + '/9\n';
+            body += 'Bedside cue: "' + m.cue + '"\n';
+            body += 'Clinical hallmark: ' + m.hallmark + '\n\n';
+
+            body += 'CANDIDATE REMEDIES (' + remedyDB[top.key].length + ') — differentiate with full case-taking:\n';
+            remedyDB[top.key].forEach(r => {
+                body += '  • ' + r.n + ' — ' + r.f + '\n';
+            });
+            body += '\n';
+        } else {
+            body += 'No circuit elevation recorded.\n\n';
+        }
+
+        body += 'FULL CIRCUIT SCORES:\n';
+        order.forEach(k => {
+            body += '  - ' + circuitMeta[k].name + ': ' + scores[k] + '/9\n';
+        });
+        body += '\nNote: Constitutional remedies are multidimensional. This shortlist triages the family of remedies to consider first for the dominant circuit; it is not an automatic prescription.\n';
+
+        const label = top.val > 0 ? circuitMeta[top.key].name + ' Biotype' : 'Assessment';
+        const subject = encodeURIComponent('Homoeopathic Case Note: ' + label);
+        window.location.href = 'mailto:architmehta98@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(body);
+    }
+
+    // Browsable Materia Medica reference
+    function renderReference() {
+        const q = (document.getElementById('remedy-search').value || '').trim().toLowerCase();
+        const container = document.getElementById('reference-list');
+        container.innerHTML = order.map(k => {
+            const m = circuitMeta[k];
+            const matches = remedyDB[k].filter(r =>
+                !q || r.n.toLowerCase().includes(q) || r.f.toLowerCase().includes(q) || r.w.toLowerCase().includes(q));
+            if (matches.length === 0) return '';
+            const dot = chartColors[k];
+            const items = matches.map(r => `
+                <details class="border border-slate-200 rounded">
+                    <summary class="cursor-pointer list-none px-3 py-2 flex items-center justify-between hover:bg-slate-50">
+                        <span class="text-sm font-medium text-slate-800">${r.n}</span>
+                        <span class="text-[10px] text-slate-400">${r.f.slice(0, 44)}${r.f.length > 44 ? '…' : ''}</span>
+                    </summary>
+                    <div class="px-3 pb-3 pt-1 text-xs text-slate-600 space-y-1.5 bg-slate-50">
+                        <p><span class="font-bold text-slate-500">Core feeling:</span> ${r.f}</p>
+                        <p><span class="font-bold text-slate-500">Why this circuit:</span> ${r.w}</p>
+                    </div>
+                </details>`).join('');
+            return `
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full" style="background:${dot}"></span>
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide">${m.roman}. ${m.name} <span class="font-normal text-slate-400 normal-case">("${m.biotype}" · ${matches.length})</span></h4>
+                    </div>
+                    <div class="space-y-1.5">${items}</div>
+                </div>`;
+        }).join('');
+        if (!container.innerHTML.trim()) {
+            container.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">No remedy matches "' + q + '".</p>';
+        }
+    }
+
+    // Initialize
+    initChart();
+    renderReference();
+    </script>
+</body>
+</html>
