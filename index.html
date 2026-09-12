@@ -38,7 +38,7 @@
                 <h1 class="font-semibold text-lg tracking-tight">Precision Psychiatry <span class="text-slate-400 font-normal">| Clinician Tool</span></h1>
             </div>
             <div class="text-xs text-slate-400">
-                v2.1 • Williams Taxonomy
+                v2.1 • Inspired by the Williams Neural Circuit Taxonomy (independent, unvalidated adaptation)
             </div>
         </div>
     </nav>
@@ -355,6 +355,16 @@
                             <p class="text-sm">Complete the assessment to generate clinical insights.</p>
                         </div>
                     </div>
+
+                    <div class="bg-amber-50 border-t border-amber-200 px-5 py-3">
+                        <p class="text-[11px] text-amber-800 leading-relaxed">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                            This picks the single highest-scoring circuit and does <strong>not</strong> yet
+                            account for mixed or comorbid presentations, where several circuits are elevated
+                            together. Rx/Tx suggestions are <strong>illustrative, not prescriptive</strong>.
+                            A screening/education aid only — not a diagnostic tool or medical device.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
@@ -368,7 +378,7 @@
                 </div>
                 
                 <p class="text-[10px] text-center text-slate-400 mt-4">
-                    Report will be sent to default: architmehta98@gmail.com
+                    Opens a draft in your mail client — add the recipient before sending.
                 </p>
 
             </div>
@@ -547,7 +557,7 @@
 
             let body = `CLINICAL ASSESSMENT NOTE\n`;
             body += `Date: ${date}\n`;
-            body += `Protocol: Williams Neural Circuit Taxonomy\n\n`;
+            body += `Framework: Inspired by the Williams Neural Circuit Taxonomy (independent, unvalidated adaptation)\n\n`;
             
             body += `PRIMARY FINDING: ${c.name} Biotype\n`;
             body += `Severity Score: ${maxScore}/9\n`;
@@ -563,9 +573,16 @@
                 body += `- ${key}: ${val}/9\n`;
             });
 
+            body += `\nCAVEATS:\n`;
+            body += `- Single-winner logic: reflects only the highest-scoring circuit; does not yet\n`;
+            body += `  account for mixed/comorbid presentations where several circuits are elevated.\n`;
+            body += `- Rx/Tx suggestions above are illustrative, not prescriptive.\n`;
+            body += `- Screening/education aid only, not a diagnostic tool or medical device.\n`;
+
             const subject = encodeURIComponent(`Clinician Note: ${c.name} Biotype Assessment`);
-            const mailtoLink = `mailto:architmehta98@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`;
-            
+            // No hardcoded recipient — the clinician chooses where to send the note.
+            const mailtoLink = `mailto:?subject=${subject}&body=${encodeURIComponent(body)}`;
+
             window.location.href = mailtoLink;
         }
 
